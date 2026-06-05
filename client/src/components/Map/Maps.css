@@ -1,0 +1,27 @@
+html{
+    box-sizing: border-box;
+    font-size: 100%;
+}
+
+*,*::after,*::before{
+    box-sizing: inherit;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+}
+h1{
+    text-align: center;
+    font-size: 2rem;
+    padding: 0 3;
+}
+#map{
+    height: 100vh;
+}
+
+.gm-style-iw-d{
+    color: black;
+}

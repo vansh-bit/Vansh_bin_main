@@ -1,0 +1,25 @@
+.react-chatbot-kit-chat-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+    overflow-y: auto; 
+}
+
+/* Hide scrollbar for webkit browsers (Chrome, Safari) */
+.react-chatbot-kit-chat-message-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.react-chatbot-kit-chat-message-container {
+    scrollbar-width: none;
+}
+.chat-bot-btn
+{
+    position: fixed;
+    bottom: 5vh;
+    right: 12px;
+    z-index: 2;
+    height: 50px;
+}
