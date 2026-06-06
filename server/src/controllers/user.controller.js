@@ -5,6 +5,7 @@ import {cloudinaryUpload} from "../utils/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import axios from "axios";
 
 
 const generateTokens = async(userId) =>{
@@ -238,6 +239,39 @@ const isLoggedIn = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200,resObj,"Status Sent Successfully"));
 })
+
+const getChatbotResponse = asyncHandler(async (req, res) => {
+    const { message } = req.body;
+    if (!message) {
+        throw new ApiError(400, "Message is required");
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        throw new ApiError(500, "Gemini API key is not configured on the server");
+    }
+
+    try {
+        const response = await axios.post(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+            {
+                contents: [{ parts: [{ text: message }] }]
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        const reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "I couldn't process that. Please try again.";
+        return res.status(200).json(new ApiResponse(200, { reply }, "Chatbot reply fetched successfully"));
+    } catch (error) {
+        console.error("Gemini API Error:", error.response?.data || error.message);
+        throw new ApiError(500, "Failed to get response from Gemini AI");
+    }
+});
+
 export {
     home,
     registerUser,
@@ -247,5 +281,6 @@ export {
     changePassword,
     getCurrentUser,
     updateAccountDetails,
-    isLoggedIn
+    isLoggedIn,
+    getChatbotResponse
 }
