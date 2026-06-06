@@ -107,7 +107,7 @@ const GetFood = () => {
           <span className="  font-semibold ml-2">{sliderValue} km</span>
         </div>
         
-            <MapComponent data={data}/>
+            <MapComponent data={data} userLatitude={latitude} userLongitude={longitude}/>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 pb-14">
           {data.map((item, index) => (
             <FoodCard card_detail={item} key={index} onClaimSuccess={fetchData} />

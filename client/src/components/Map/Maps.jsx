@@ -19,21 +19,20 @@ const MapComponent = (props) => {
     console.log(marker);
   };
 
-//   const markers = [
-//     [
+  const userLat = parseFloat(props.userLatitude);
+  const userLng = parseFloat(props.userLongitude);
+  const hasUserLocation = !isNaN(userLat) && !isNaN(userLng);
+  
+  const mapCenter = hasUserLocation 
+    ? { lat: userLat, lng: userLng } 
+    : { lat: 25.050030688239502, lng: 75.82734334044619 };
     
-//         25.04756186859711,
-//         75.82903849647712
-//     ],
-//     [
-        
-//         25.050030688239502,
-//         75.82734334044619
-//     ]
-//   ];
+  const mapZoom = hasUserLocation ? 12 : 5;
 
-const markers = props.data.map(obj => [obj.location.coordinates[1],obj.location.coordinates[0],obj.title]);
-console.log(markers);
+  const markers = props.data 
+    ? props.data.map(obj => [obj.location.coordinates[1], obj.location.coordinates[0], obj.title])
+    : [];
+  console.log(markers);
 
   if (loadError) return "Error";
   if (!isLoaded) return "Maps";
@@ -45,10 +44,16 @@ console.log(markers);
           height: "80vh",
         //    width:"100vw"
         }}
-        center={{ lat: 25.050030688239502, lng: 75.82734334044619 }} // Set your default center here
-        zoom={5}
+        center={mapCenter} 
+        zoom={mapZoom}
         onLoad={onMapLoad}  
       >
+        {hasUserLocation && (
+          <MarkerF
+            position={{ lat: userLat, lng: userLng }}
+            title="Your Current Location"
+          />
+        )}
         {markers.map((markerData, index) => (
           <MarkerF
             key={index}
