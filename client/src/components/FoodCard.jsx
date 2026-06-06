@@ -41,8 +41,8 @@ const FoodCard = ({ card_detail, onClaimSuccess }) => {
       <Card className="max-w-sm rounded-xl shadow-lg">
         <img
           className="object-cover h-60 w-full rounded-t-xl"
-          src={card_detail.photo}
-          alt="Meaningful alt text for an image that is not purely decorative"
+          src={card_detail.photo || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=600&auto=format&fit=crop"}
+          alt="Food donation"
         />
         <div className="pb-6">
           <h5 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

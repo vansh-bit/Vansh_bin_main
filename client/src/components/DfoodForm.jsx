@@ -31,7 +31,6 @@ const DfoodForm = () => {
   const [state,setState]=useState('');
   const [city,setCity]=useState('');
   const [organization,setOrganization]=useState('');
-  const [photo,setPhoto]=useState();
   const [description,setDescription]=useState('');
   const [title,setTitle]=useState('Title Here');
 
@@ -39,22 +38,7 @@ const DfoodForm = () => {
   const [longitude, setLongitude] = useState(null);
   const [error, setError] = useState(null);
 
-  async function uploadToCloudinary(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', import.meta.env.VITE_UPLOAD_PRESET); 
-    formData.append('cloud_name', import.meta.env.VITE_CLOUD_NAME); 
-    try {
-      const res = await axios.post(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`,
-        formData
-      );
-      return res.data.secure_url;
-    } catch (error) {
-      console.error('Error uploading image: ', error);
-      throw new Error('Error uploading image');
-    }
-  }
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -111,11 +95,6 @@ const DfoodForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let photoUrl = "";
-      if (photo) {
-        photoUrl = await uploadToCloudinary(photo);
-      }
-      
       const payload = {
         address,
         pincode,
@@ -123,7 +102,7 @@ const DfoodForm = () => {
         city,
         organization,
         description,
-        photo: photoUrl,
+        photo: "",
         latitude: String(latitude),
         longitude: String(longitude),
         title
@@ -471,43 +450,7 @@ const DfoodForm = () => {
             },
           }}
         />
-        <TextField
-        name="pic"              
-        onChange={(e)=>{setPhoto(e.target.files[0])}}
-           margin="normal"
-           required
-           fullWidth
-           //label="Photo"
-           type='file'
-          //  autoFocus
-           sx={{
-            // '& .MuiOutlinedInput-root fieldset': {
-            // borderColor: '#FFF',
-            // },
-            "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#FFF",
-              },
-            "& .MuiOutlinedInput-root": {
-            '&.Mui-focused': {
-              
-              bgcolor: "#FFFFFF",
-              borderWidth: "3px",
-              
-            },   },
-            "&:hover": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#0892d0",
-                borderWidth: "3px",
-              },
-            },
-            "& .MuiInputLabel-outlined": {
-              "&.Mui-focused": {
-                color: "#0892d0",
-                fontWeigth:"bold",
-              },
-            },
-          }}
-        />
+
         <TextField
          name="desc"              
          onChange={(e)=>{setDescription(e.target.value)}}
