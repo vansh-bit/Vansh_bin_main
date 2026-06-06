@@ -22,7 +22,8 @@ const generateTokens = async(userId) =>{
 }
 const options ={
     httpOnly: true,
-    secure: true
+    secure: true,
+    sameSite: 'none'
 }
 const home = asyncHandler(async (req, res) => {
     return res
@@ -72,7 +73,8 @@ const loginUser = asyncHandler(async(req,res)=>
 {   
     const options ={
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'none'
     }
     //req->body se data 
     const {email,password} = req.body
@@ -116,7 +118,8 @@ const loginUser = asyncHandler(async(req,res)=>
 const logoutUser = asyncHandler(async(req,res) =>{
     const options ={
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'none'
     }
     await User.findByIdAndUpdate(
         req.user._id,
