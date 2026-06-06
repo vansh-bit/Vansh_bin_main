@@ -42,19 +42,6 @@ const postFood = asyncHandler(async(req,res)=>{
         throw new ApiError(400,"Some fields are Empty");
     }
     
-    //check for images
-    // let photoFile = null;
-    // console.log(req.files);
-    // if(req.files && Array.isArray(req.files.photo) && req.files.photo.length > 0) {
-    //     photoFile = req.files.photo[0]; // Assuming only one photo is uploaded
-    // }
-
-    //upload to cloudinary,avatar
-    // let photo;
-    // if (photoFile) {
-    //     photo = await cloudinaryUpload(photoFile);
-    // }
-
     const owner = req.user;
 
     //create user obj 
@@ -92,13 +79,7 @@ const getFood = asyncHandler(async(req,res)=>{
 
     const {address,pincode,state,city,organization,description,latitude,longitude,setDistance} = req.body
 
-    //validation - not empty
-    // if([address,pincode,state,city,latitude,longitude].some((field)=>{
-    //     field?.trim() ===""
-    // }))
-    // {
-    //     throw new ApiError(400,"Some fields are Empty");
-    // }
+
     
     const store_data = await Food.aggregate([
         {
@@ -113,13 +94,6 @@ const getFood = asyncHandler(async(req,res)=>{
     ]);
 
     return res.status(200).json(new ApiResponse(200,store_data, "All Foods fetched Successfully"));
-    // const allFoods = await Food.find({});
-    // if(!allFoods)
-    // {
-    //     return new ApiError(500,"Error Fetching Foods")
-    // }
-    // // return res
-    // return res.status(200).json(new ApiResponse(200,allFoods, "All Foods fetched Successfully"));
 });
 
 const takeFood = asyncHandler(async(req,res)=>{
