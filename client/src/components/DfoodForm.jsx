@@ -111,32 +111,36 @@ const DfoodForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const photoUrl = await uploadToCloudinary(photo);
-      const formDataToSend = new FormData();
-      formDataToSend.append('address', address);
-      formDataToSend.append('pincode', pincode);
-      formDataToSend.append('state', state);
-      formDataToSend.append('city', city);
-      formDataToSend.append('organization',organization);
-      formDataToSend.append('description', description);
-      formDataToSend.append('photo', photoUrl);
-      formDataToSend.append('latitude', latitude);
-      formDataToSend.append('longitude', longitude);
-      formDataToSend.append('title', title);
-      const response = await axios.post('/api/food/postfood', formDataToSend,
-       {
-       headers: {
-        'Content-Type': 'application/json' 
+      let photoUrl = "";
+      if (photo) {
+        photoUrl = await uploadToCloudinary(photo);
       }
-       },
-      {
+      
+      const payload = {
+        address,
+        pincode,
+        state,
+        city,
+        organization,
+        description,
+        photo: photoUrl,
+        latitude: String(latitude),
+        longitude: String(longitude),
+        title
+      };
+
+      const response = await axios.post('/api/food/postfood', payload, {
         withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
       console.log(response.data);
       toast.success('Food Donation successfully');
       navigate('/');
     } catch (error) {
       console.error('Error:', error);
+      toast.error('Failed to submit donation. Please try again.');
     }
   };
 
@@ -582,7 +586,7 @@ const DfoodForm = () => {
         <TextField
         name="lat"              
         onChange={(e)=>{setLatitude(e.target.value)}}
-           value={latitude}
+           value={latitude || ''}
            margin="normal"
            required
            fullWidth
@@ -617,7 +621,7 @@ const DfoodForm = () => {
           }}
         />
         <TextField
-        value={longitude}
+        value={longitude || ''}
         name="long"              
         onChange={(e)=>{setLongitude(e.target.value)}}
            margin="normal"

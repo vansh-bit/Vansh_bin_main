@@ -3,7 +3,10 @@ import { useSpring, animated } from "react-spring";
 import { Card } from "flowbite-react";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
-const FoodCard = ({ card_detail }) => {
+import axios from "axios";
+import { toast } from "react-toastify";
+
+const FoodCard = ({ card_detail, onClaimSuccess }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const springProps = useSpring({
@@ -12,6 +15,22 @@ const FoodCard = ({ card_detail }) => {
       : "translateY(-10px) scale(1)",
     config: { tension: 300, friction: 20 },
   });
+
+  const handleClaim = async () => {
+    try {
+      const response = await axios.delete(`/api/food/takefood/${card_detail._id}`, {
+        withCredentials: true
+      });
+      console.log(response.data);
+      toast.success("Food claimed successfully!");
+      if (onClaimSuccess) {
+        onClaimSuccess();
+      }
+    } catch (error) {
+      console.error("Error claiming food:", error);
+      toast.error(error.response?.data?.message || "Failed to claim food. Please login/try again.");
+    }
+  };
 
   return (
     <animated.div
@@ -42,6 +61,15 @@ const FoodCard = ({ card_detail }) => {
             <p className="font-normal text-gray-700 dark:text-gray-400 text-left">
               Contact No:- {card_detail.owner.mobileNo}
             </p>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleClaim}
+              sx={{ mt: 2, borderRadius: '20px', textTransform: 'none', fontWeight: 'bold' }}
+              fullWidth
+            >
+              Take Food
+            </Button>
           </div>
         </div>
       </Card>

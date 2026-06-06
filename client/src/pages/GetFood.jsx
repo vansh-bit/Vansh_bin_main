@@ -110,7 +110,7 @@ const GetFood = () => {
             <MapComponent data={data}/>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 pb-14">
           {data.map((item, index) => (
-            <FoodCard card_detail={item} key={index} />
+            <FoodCard card_detail={item} key={index} onClaimSuccess={fetchData} />
           ))}
         </div>
       </div>

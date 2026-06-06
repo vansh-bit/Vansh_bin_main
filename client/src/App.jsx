@@ -62,7 +62,7 @@ const AppContent = () => {
         <Route path='/DFood' element={<DFood />} />
         <Route path='/GetFood' element={<GetFood/>} />
         <Route path='/logout' element={<Logout />} />
-        <Route path='/GetFood' element={<GetFood />} />
+        <Route path='/RFood' element={<RFood />} />
         <Route path='/services' element={<Services />} />
 
       </Routes>

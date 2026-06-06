@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-    '/api': process.env.VITE_BACKENDURL
+      '/api': process.env.VITE_BACKENDURL || 'http://localhost:3000'
     },
   },
   resolve: {

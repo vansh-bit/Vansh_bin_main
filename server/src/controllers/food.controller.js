@@ -122,7 +122,25 @@ const getFood = asyncHandler(async(req,res)=>{
     // return res.status(200).json(new ApiResponse(200,allFoods, "All Foods fetched Successfully"));
 });
 
+const takeFood = asyncHandler(async(req,res)=>{
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(400, "Invalid food item ID format");
+    }
+
+    const food = await Food.findById(id);
+    if(!food) {
+        throw new ApiError(404, "Food item not found or already claimed");
+    }
+
+    await Food.findByIdAndDelete(id);
+
+    return res.status(200).json(new ApiResponse(200, {}, "Food item claimed successfully"));
+});
+
 export {
     postFood,
-    getFood
+    getFood,
+    takeFood
 }
