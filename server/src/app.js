@@ -5,8 +5,18 @@ import cookieParser from "cookie-parser"
 const app = express()
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    methods: ["POST","GET"],
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (
+            origin.endsWith('.vercel.app') || 
+            origin.startsWith('http://localhost:') || 
+            origin === process.env.CORS_ORIGIN
+        ) {
+            return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+    },
+    methods: ["POST", "GET", "DELETE", "OPTIONS", "PATCH", "PUT"],
     credentials: true
 }))
 
