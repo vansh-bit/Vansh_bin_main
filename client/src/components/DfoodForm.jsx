@@ -82,6 +82,15 @@ const DfoodForm = () => {
     try {
       let photoUrl = "";
       if (photo) {
+        const cloudName = import.meta.env.VITE_CLOUD_NAME;
+        const uploadPreset = import.meta.env.VITE_UPLOAD_PRESET;
+        
+        if (!cloudName || !uploadPreset) {
+          toast.error("Cloudinary config (VITE_CLOUD_NAME or VITE_UPLOAD_PRESET) is missing in client/.env. Configure them or submit without selecting a photo.");
+          setLoading(false);
+          return;
+        }
+
         toast.info("Uploading food photo...");
         photoUrl = await uploadToCloudinary(photo);
       }
