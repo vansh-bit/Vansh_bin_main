@@ -64,6 +64,11 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match. Please try again.");
+      return;
+    }
+
     const data = new FormData(event.currentTarget);
     const obj = {
       fullName: data.get("fullName"),

@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     const {fullName,email,mobileNo,password} = req.body
     //validation - not empty
     if([fullName,email,mobileNo,password].some((field)=>{
-        field?.trim() ===""
+        return field?.trim() ===""
     }))
     {
         throw new ApiError(400,"Some fields are Empty")
