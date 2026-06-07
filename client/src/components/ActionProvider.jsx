@@ -13,7 +13,9 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
         }
         catch(error) {
             console.log("Gemini Error: ", error);
-            message = createChatBotMessage("Error in contacting Gemini. Please make sure you are logged in.");
+            const serverMsg = error.response?.data?.message;
+            const fallbackMsg = "Error in contacting Gemini. Please check if the GEMINI_API_KEY is configured in your server .env and that you are logged in.";
+            message = createChatBotMessage(serverMsg || fallbackMsg);
         }
         updateState(message);
     }
