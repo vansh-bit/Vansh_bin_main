@@ -29,4 +29,15 @@ app.get("/", (req, res) => {
 app.use("/api/users",userRouter)
 app.use("/api/food",foodRouter)
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message
+    });
+});
+
 export { app }
